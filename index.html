@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>З Днем Народження, Бабусю! ❤️</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #ffeaa7, #ffb8b8, #fad0c4);
+            background-size: 400% 400%;
+            animation: gradientBG 10s ease infinite;
+            color: #4a4a4a;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 40px 25px;
+            border-radius: 30px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(255, 154, 158, 0.3);
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            transition: all 0.4s ease-in-out;
+            z-index: 10;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            color: #ff6b81;
+            line-height: 1.2;
+        }
+
+        p {
+            font-size: 1.25rem;
+            margin-bottom: 20px;
+            color: #636e72;
+            line-height: 1.5;
+        }
+
+        .warning-text {
+            font-size: 1.1rem;
+            color: #ee5253;
+            font-weight: bold;
+            margin-bottom: 35px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.96); opacity: 0.8; }
+            50% { transform: scale(1.04); opacity: 1; }
+            100% { transform: scale(0.96); opacity: 0.8; }
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            height: 50px;
+            position: relative;
+            width: 100%;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+        }
+
+        .btn-yes, .btn-action {
+            background: linear-gradient(135deg, #ff758c, #ff7eb3);
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 117, 140, 0.4);
+        }
+
+        .btn-action {
+            width: 100%;
+            margin-top: 10px;
+            padding: 14px 30px;
+        }
+
+        .btn-yes:hover, .btn-action:hover {
+            transform: scale(1.03);
+            box-shadow: 0 7px 20px rgba(255, 117, 140, 0.6);
+        }
+
+        .btn-no {
+            background-color: #ffeaa7;
+            color: #d63031;
+            width: 45%;
+            position: absolute;
+            right: 5%;
+            z-index: 999;
+            will-change: top, left;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .photo-wrapper {
+            position: relative;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .photo-card {
+            background: white;
+            padding: 12px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            transform: rotate(1.5deg);
+            display: none;
+            animation: fadeIn 0.5s ease-in-out forwards;
+        }
+
+        .photo-card.active {
+            display: block;
+        }
+
+        .photo-card img, .photo-card video {
+            width: 100%;
+            height: auto;
+            max-height: 320px;
+            border-radius: 12px;
+            display: block;
+            object-fit: contain;
+            background-color: #f7f1e3;
+        }
+
+        .photo-desc {
+            font-size: 1.15rem;
+            color: #ff6b81;
+            font-weight: 500;
+            margin-top: 15px;
+            line-height: 1.4;
+            min-height: 40px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9) rotate(-2deg); }
+            to { opacity: 1; transform: scale(1) rotate(1.5deg); }
+        }
+
+        .congrats-text {
+            font-size: 1.15rem;
+            color: #57606f;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card" id="quiz-card">
+        <h1>З Днем Народження! 🌸</h1>
+        <p>Бабусю, тобі сьогодні виповнилося... років?</p>
+        <div class="warning-text">💖 Натискай ТАК!</div>
+        
+        <div class="btn-container">
+            <button class="btn btn-yes" id="yes-btn">Так</button>
+            <button class="btn btn-no" id="no-btn">Ні</button>
+        </div>
+    </div>
+
+    <div class="card hidden" id="congrats-card">
+        <h1>Люба бабусю! 🎉❤️</h1>
+        <div class="congrats-text">
+            <p>Вітаю тебе з цим чудовим святом! 🥰</p>
+            <p>Бажаю тобі міцного-міцного здоров'я, душевного спокою, затишку в домі та якнайбільше приводів для посмішок! Ми тебе дуже любимо! 💖</p>
+        </div>
+        <button class="btn btn-action" id="start-memories-btn">Освіжимо твої спогади? ✨</button>
+    </div>
+
+    <div class="card hidden" id="gallery-card">
+        <h1 style="font-size: 1.8rem; margin-bottom: 20px;">Наші спогади ❤️</h1>
+        
+        <div class="photo-wrapper">
+            <div class="photo-card active" data-index="1">
+                <img src="photo1.jpg" alt="Фото 1">
+                <div class="photo-desc">Тут ми разом і ми ще маленькі 🥺</div>
+            </div>
+
+            <div class="photo-card" data-index="2">
+                <img src="photo2.jpg" alt="Фото 2">
+                <div class="photo-desc">Дивись, ти тут цвітеш як ті квіти ✨</div>
+            </div>
+
+            <div class="photo-card" data-index="3">
+                <img src="photo3.jpg" alt="Фото 3">
+                <div class="photo-desc">А це твої улюблені діти ❤️</div>
+            </div>
+
+            <div class="photo-card" data-index="4">
+                <video id="grandma-video" src="video.mp4" controls playsinline></video>
+                <div class="photo-desc">А це ми з тобою разом танцюємо! 🎥🕺💃</div>
+            </div>
+        </div>
+
+        <button class="btn btn-action" id="next-photo-btn">Далі ✨</button>
+    </div>
+
+    <script>
+    !function(t,e){!function t(e,n,a,i){var o=!!(e.Worker&&e.Blob&&e.Promise&&e.OffscreenCanvas&&e.OffscreenCanvasRenderingContext2D&&e.HTMLCanvasElement&&e.HTMLCanvasElement.prototype.transferControlToOffscreen&&e.URL&&e.URL.createObjectURL);function r(){}function l(t){var a=n.exports.Promise,i=void 0!==a?a:e.Promise;return"function"==typeof i?new i(t):(t(r,r),null)}var c,s,u,h,f,d,m,g,b,v=(u=Math.floor(1e3/60),h={},f=0,"function"==typeof requestAnimationFrame&&"function"==typeof cancelAnimationFrame?(c=function(t){var e=Math.random();return h[e]=requestAnimationFrame((function n(a){f===a||f+u-1<a?(f=a,delete h[e],t()):h[e]=requestAnimationFrame(n)})),e},s=function(t){h[t]&&cancelAnimationFrame(h[t])}):(c=function(t){return setTimeout(t,u)},s=function(t){return clearTimeout(t)}),{frame:c,cancel:s}),M=(g={},function(){if(d)return d;if(!a&&o){var e=["var CONFETTI, SIZE = {}, module = {};","("+t.toString()+")(this, module, true, SIZE);","onmessage = function(msg) {","  if (msg.data.options) {","    CONFETTI(msg.data.options).then(function () {","      if (msg.data.callback) {","        postMessage({ callback: msg.data.callback });","      }","    });","  } else if (msg.data.reset) {","    CONFETTI && CONFETTI.reset();","  } else if (msg.data.resize) {","    SIZE.width = msg.data.resize.width;","    SIZE.height = msg.data.resize.height;","  } else if (msg.data.canvas) {","    SIZE.width = msg.data.canvas.width;","    SIZE.height = msg.data.canvas.height;","    CONFETTI = module.exports.create(msg.data.canvas);","  }","}"].join("\n");try{d=new Worker(URL.createObjectURL(new Blob([e])))}catch(t){return void 0!==typeof console&&"function"==typeof console.warn&&console.warn("🎊 Could not load worker",t),null}!function(t){function e(e,n){t.postMessage({options:e||{},callback:n})}t.init=function(e){var n=e.transferControlToOffscreen();t.postMessage({canvas:n},[n])},t.fire=function(n,a,i){if(m)return e(n,null),m;var o=Math.random().toString(36).slice(2);return m=l((function(a){function r(e){e.data.callback===o&&(delete g[o],t.removeEventListener("message",r),m=null,i(),a())}t.addEventListener("message",r),e(n,o),g[o]=r.bind(null,{data:{callback:o}})}))},t.reset=function(){for(var e in t.postMessage({reset:!0}),g)g[e](),delete g[e]}}(d)}return d}),p={particleCount:50,angle:90,spread:45,startVelocity:45,decay:.9,gravity:1,drift:0,ticks:200,x:.5,y:.5,shapes=["square","circle"],zIndex:100,colors:["#26ccff","#a25afd","#ff5e7e","#88ff5a","#fcff42","#ffa62d","#ff36ff"],disableForReducedMotion:!1,scalar:1};function y(t,e,n){return function(t,e){return e?e(t):t}(t&&null!=t[e]?t[e]:p[e],n)}function w(t){return t<0?0:Math.floor(t)}function x(t){return parseInt(t,16)}function C(t){return t.map(T)}function T(t){var e=String(t).replace(/[^0-9a-f]/gi,"");return e.length<6&&(e=e[0]+e[0]+e[1]+e[1]+e[2]+e[2]),{r:x(e.substring(0,2)),g:x(e.substring(2,4)),b:x(e.substring(4,6))}}function I(t){t.width=document.documentElement.clientWidth,t.height=document.documentElement.clientHeight}function k(t){var e=t.getBoundingClientRect();t.width=e.width,t.height=e.height}function E(t,e,n,o,r){var c,s,u=e.slice(),h=t.getContext("2d"),f=l((function(e){function l(){c=s=null,h.clearRect(0,0,o.width,o.height),r(),e()}c=v.frame((function e(){!a||o.width===i.width&&o.height===i.height||(o.width=t.width=i.width,o.height=t.height=i.height),o.width||o.height||(n(t),o.width=t.width,o.height=t.height),h.clearRect(0,0,o.width,o.height),u=u.filter((function(t){return function(t,e){e.x+=Math.cos(e.angle2D)*e.velocity+e.drift,e.y+=Math.sin(e.angle2D)*e.velocity+e.gravity,e.wobble+=e.wobbleSpeed,e.velocity*=e.decay,e.tiltAngle+=.1,e.tiltSin=Math.sin(e.tiltAngle),e.tiltCos=Math.cos(e.tiltAngle),e.random=Math.random()+2,e.wobbleX=e.x+10*e.scalar*Math.cos(e.wobble),e.wobbleY=e.y+10*e.scalar*Math.sin(e.wobble);var n=e.tick++/e.totalTicks,a=e.x+e.random*e.tiltCos,i=e.y+e.random*e.tiltSin,o=e.wobbleX+e.random*e.tiltCos,r=e.wobbleY+e.random*e.tiltSin;if(t.fillStyle="rgba("+e.color.r+", "+e.color.g+", "+e.color.b+", "+(1-n)+")",t.beginPath(),"circle"===e.shape)t.ellipse?t.ellipse(e.x,e.y,Math.abs(o-a)*e.ovalScalar,Math.abs(r-i)*e.ovalScalar,Math.PI/10*e.wobble,0,2*Math.PI):function(t,e,n,a,i,o,r,l,c){t.save(),t.translate(e,n),t.rotate(o),t.scale(a,i),t.arc(0,0,1,r,l,c),t.restore()}(t,e.x,e.y,Math.abs(o-a)*e.ovalScalar,Math.abs(r-i)*e.ovalScalar,Math.PI/10*e.wobble,0,2*Math.PI);else if("star"===e.shape)for(var l=Math.PI/2*3,c=4*e.scalar,s=8*e.scalar,u=e.x,h=e.y,f=5,d=Math.PI/f;f--;)u=e.x+Math.cos(l)*s,h=e.y+Math.sin(l)*s,t.lineTo(u,h),l+=d,u=e.x+Math.cos(l)*c,h=e.y+Math.sin(l)*c,t.lineTo(u,h),l+=d;else t.moveTo(Math.floor(e.x),Math.floor(e.y)),t.lineTo(Math.floor(e.wobbleX),Math.floor(i)),t.lineTo(Math.floor(o),Math.floor(r)),t.lineTo(Math.floor(a),Math.floor(e.wobbleY));return t.closePath(),t.fill(),e.tick<e.totalTicks}(h,t)})),u.length?c=v.frame(e):l()})),s=l}));return{addFettis:function(t){return u=u.concat(t),f},canvas:t,promise:f,reset:function(){c&&v.cancel(c),s&&s()}}}function S(t,n){var a,i=!t,r=!!y(n||{},"resize"),c=y(n,"disableForReducedMotion",Boolean),s=o&&!!y(n||{},"useWorker")?M():null,u=i?I:k,h=!(!t||!s)&&!!t.__confetti_initialized,f="function"==typeof matchMedia&&matchMedia("(prefers-reduced-motion)").matches;function d(e,n,i){for(var o,r,l,c,s,h=y(e,"particleCount",w),f=y(e,"angle",Number),d=y(e,"spread",Number),m=y(e,"startVelocity",Number),g=y(e,"decay",Number),b=y(e,"gravity",Number),v=y(e,"drift",Number),M=y(e,"colors",C),p=y(e,"ticks",Number),x=y(e,"shapes"),T=y(e,"scalar"),I=function(t){var e=y(t,"origin",Object);return e.x=y(e,"x",Number),e.y=y(e,"y",Number)}(e),k=h,S=[],F=t.width*I.x,N=t.height*I.y;k--;)S.push((o={x:F,y:N,angle:f,spread:d,startVelocity:m,color:M[k%M.length],shape:x[(c=0,s=x.length,Math.floor(Math.random()*(s-c))+c)],ticks:p,decay:g,gravity:b,drift:v,scalar:T},r=void 0,l=void 0,r=o.angle*(Math.PI/180),l=o.spread*(Math.PI/180),{x:o.x,y:o.y,wobble:10*Math.random(),wobbleSpeed:Math.min(.11,.1*Math.random()+.05),velocity:.5*o.startVelocity+Math.random()*o.startVelocity,angle2D:-r+(.5*l-Math.random()*l),tiltAngle:(.5*Math.random()+.25)*Math.PI,color:o.color,shape:o.shape,tick:0,totalTicks:o.ticks,decay:o.decay,drift:o.drift,random:Math.random()+2,tiltSin:0,tiltCos:0,wobbleX:0,wobbleY:0,gravity:3*o.gravity,ovalScalar:.6,scalar:o.scalar}));return a?a.addFettis(S):(a=E(t,S,u,n,i)).promise}function m(n){var o=c||y(n,"disableForReducedMotion",Boolean),m=y(n,"zIndex",Number);if(o&&f)return l((function(t){t()}));i&&a?t=a.canvas:i&&!t&&(t=function(t){var e=document.createElement("canvas");return e.style.position="fixed",e.style.top="0px",e.style.left="0px",e.style.pointerEvents="none",e.style.zIndex=t,e}(m),document.body.appendChild(t)),r&&!h&&u(t);var g={width:t.width,height:t.height};function b(){if(s){var e={getBoundingClientRect:function(){if(!i)return t.getBoundingClientRect()}};return u(e),void s.postMessage({resize:{width:e.width,height:e.height}})}g.width=g.height=null}function v(){a=null,r&&e.removeEventListener("resize",b),i&&t&&(document.body.removeChild(t),t=null,h=!1)}return s&&!h&&s.init(t),h=!0,s&&(t.__confetti_initialized=!0),r&&e.addEventListener("resize",b,!1),s?s.fire(n,g,v):d(n,g,v)}return m.reset=function(){s&&s.reset(),a&&a.reset()},m}function F(){return b||(b=S(null,{useWorker:!0,resize:!0})),b}n.exports=function(){return F().apply(this,arguments)},n.exports.reset=function(){F().reset()},n.exports.create=S}(function(){return void 0!==t?t:"undefined"!=typeof self?self:this||{}}(),e,!1),t.confetti=e.exports}(window,{});
+    </script>
+
+    <script>
+        const noBtn = document.getElementById('no-btn');
+        const yesBtn = document.getElementById('yes-btn');
+        const startMemoriesBtn = document.getElementById('start-memories-btn');
+        const nextPhotoBtn = document.getElementById('next-photo-btn');
+        const grandmaVideo = document.getElementById('grandma-video');
+
+        const quizCard = document.getElementById('quiz-card');
+        const congratsCard = document.getElementById('congrats-card');
+        const galleryCard = document.getElementById('gallery-card');
+
+        const photoCards = document.querySelectorAll('.photo-card');
+        let currentPhotoIndex = 0;
+
+        // Святкові вибухи конфеті при перемиканні
+        function fireClickConfetti() {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 40,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0, y: 0.8 }
+                });
+                confetti({
+                    particleCount: 40,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1, y: 0.8 }
+                });
+            }
+        }
+
+        // Потужний фінальний салют
+        function fireFinalFireworks() {
+            if (typeof confetti === 'function') {
+                const duration = 5 * 1000; 
+                const animationEnd = Date.now() + duration;
+                const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 1000 };
+
+                function randomInRange(min, max) {
+                    return Math.random() * (max - min) + min;
+                }
+
+                const interval = setInterval(function() {
+                    const timeLeft = animationEnd - Date.now();
+
+                    if (timeLeft <= 0) {
+                        return clearInterval(interval);
+                    }
+
+                    const particleCount = 50 * (timeLeft / duration);
+                    confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                    confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+                }, 250);
+            }
+        }
+
+        // Втікання кнопки "Ні"
+        function moveButton(e) {
+            if (e) e.preventDefault();
+            const padding = 40; 
+            const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+            const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+
+            let randomX = Math.floor(Math.random() * (maxX - padding)) + padding;
+            let randomY = Math.floor(Math.random() * (maxY - padding)) + padding;
+
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        }
+
+        noBtn.addEventListener('touchstart', moveButton, { passive: false });
+        noBtn.addEventListener('mouseover', moveButton);
+        noBtn.addEventListener('click', moveButton);
+
+        // Кліки та переходи
+        yesBtn.addEventListener('click', () => {
+            quizCard.classList.add('hidden');
+            congratsCard.classList.remove('hidden');
+            noBtn.classList.add('hidden');
+            fireClickConfetti();
+        });
+
+        startMemoriesBtn.addEventListener('click', () => {
+            congratsCard.classList.add('hidden');
+            galleryCard.classList.remove('hidden');
+            fireClickConfetti();
+        });
+
+        // Кнопка "Далі"
+        nextPhotoBtn.addEventListener('click', () => {
+            photoCards[currentPhotoIndex].classList.remove('active');
+            currentPhotoIndex++;
+
+            if (currentPhotoIndex < photoCards.length) {
+                photoCards[currentPhotoIndex].classList.add('active');
+                fireClickConfetti();
+
+                // Якщо дійшли до кроку з відео (останній крок)
+                if (currentPhotoIndex === photoCards.length - 1) {
+                    nextPhotoBtn.textContent = "Завершити ❤️";
+                    
+                    // Спроба автоматичного запуску відео
+                    grandmaVideo.play().catch(() => {
+                        console.log("Автозапуск відео заблоковано системою.");
+                    });
+                }
+            } else {
+                // Зупиняємо відео при переході на фінальні титри
+                grandmaVideo.pause();
+
+                // ФІНАЛЬНИЙ ЕКРАН З БУЙНИМ САЛЮТОМ
+                galleryCard.innerHTML = `
+                    <h1 style="font-size: 2.2rem; margin-bottom: 15px; color: #ff6b81;">Зі святом, рідна! 🎂</h1>
+                    <p style="font-size: 1.2rem; color: #636e72;">Міцно тебе обіймаємо та цілуємо! Дякуємо, що ти у нас є! ❤️✨🌸</p>
+                `;
+                fireFinalFireworks();
+            }
+        });
+    </script>
+</body>
+</html>
