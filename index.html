@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>З Днем Народження, Бабусю! ❤️</title>
-    <!-- ПІДКЛЮЧАЄМО НАДІЙНИЙ САЛЮТ З ІНТЕРНЕТУ -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         * {
@@ -185,7 +184,8 @@
 </head>
 <body>
 
-    <!-- ЕКРАН 1: Пастка -->
+    <audio id="bg-music" src="music.mp3" loop></audio>
+
     <div class="card" id="quiz-card">
         <h1>З Днем Народження! 🌸</h1>
         <p>Бабусю, тобі сьогодні виповнилося 61 рік?</p>
@@ -197,7 +197,6 @@
         </div>
     </div>
 
-    <!-- ЕКРАН 2: Текст привітання -->
     <div class="card hidden" id="congrats-card">
         <h1>Люба бабусю! 🎉❤️</h1>
         <div class="congrats-text">
@@ -207,30 +206,25 @@
         <button class="btn btn-action" id="start-memories-btn">Освіжимо твої спогади? ✨</button>
     </div>
 
-    <!-- ЕКРАН 3: Галерея спогадів -->
     <div class="card hidden" id="gallery-card">
         <h1 style="font-size: 1.8rem; margin-bottom: 20px;">Наші спогади ❤️</h1>
         
         <div class="photo-wrapper">
-            <!-- Крок 1 -->
             <div class="photo-card active" data-index="1">
                 <img src="photo1.jpg" alt="Фото 1">
                 <div class="photo-desc">Тут ми разом і ми ще маленькі 🥺</div>
             </div>
 
-            <!-- Крок 2 (Твоє JPG фото) -->
             <div class="photo-card" data-index="2">
                 <img src="photo2.jpg" alt="Фото 2">
                 <div class="photo-desc">Дивись, ти тут цвітеш як ті квіти ✨</div>
             </div>
 
-            <!-- Крок 3 -->
             <div class="photo-card" data-index="3">
                 <img src="photo3.jpg" alt="Фото 3">
                 <div class="photo-desc">А це твої улюблені діти ❤️</div>
             </div>
 
-            <!-- Крок 4 (Туреччина) -->
             <div class="photo-card" data-index="4">
                 <img src="photo4.jpg" alt="Фото 4">
                 <div class="photo-desc">А це ти в Туреччині ☀️🌊</div>
@@ -240,12 +234,12 @@
         <button class="btn btn-action" id="next-photo-btn">Далі ✨</button>
     </div>
 
-    <!-- СКРИПТ КЕРУВАННЯ -->
     <script>
         const noBtn = document.getElementById('no-btn');
         const yesBtn = document.getElementById('yes-btn');
         const startMemoriesBtn = document.getElementById('start-memories-btn');
         const nextPhotoBtn = document.getElementById('next-photo-btn');
+        const music = document.getElementById('bg-music');
 
         const quizCard = document.getElementById('quiz-card');
         const congratsCard = document.getElementById('congrats-card');
@@ -254,29 +248,43 @@
         const photoCards = document.querySelectorAll('.photo-card');
         let currentPhotoIndex = 0;
 
-        // Потужний безвідмовний салют
-        function fireFireworks() {
-            const duration = 3 * 1000;
-            const end = Date.now() + duration;
+        // Маленьке конфеті при кліках
+        function fireClickConfetti() {
+            confetti({
+                particleCount: 40,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0, y: 0.8 }
+            });
+            confetti({
+                particleCount: 40,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1, y: 0.8 }
+            });
+        }
 
-            (function frame() {
-                confetti({
-                    particleCount: 5,
-                    angle: 60,
-                    spread: 55,
-                    origin: { x: 0, y: 0.8 }
-                });
-                confetti({
-                    particleCount: 5,
-                    angle: 120,
-                    spread: 55,
-                    origin: { x: 1, y: 0.8 }
-                });
+        // Твоя робоча функція великого салюту
+        function fireFinalFireworks() {
+            const duration = 4 * 1000; 
+            const animationEnd = Date.now() + duration;
+            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 1000 };
 
-                if (Date.now() < end) {
-                    requestAnimationFrame(frame);
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            const interval = setInterval(function() {
+                const timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
                 }
-            }());
+
+                const particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
         }
 
         // Втікання кнопки "Ні"
@@ -298,37 +306,46 @@
         noBtn.addEventListener('mouseover', moveButton);
         noBtn.addEventListener('click', moveButton);
 
-        // Переходи з салютом
+        // Перехід після "Так"
         yesBtn.addEventListener('click', () => {
             quizCard.classList.add('hidden');
             congratsCard.classList.remove('hidden');
             noBtn.classList.add('hidden');
-            fireFireworks(); // Салют бабахне відразу після натискання "Так"
+
+            music.play().catch(error => {
+                console.log("Очікування взаємодії користувача:", error);
+            });
+            
+            // Запускаємо твій перевірений крутий салют відразу!
+            fireFinalFireworks();
         });
 
         startMemoriesBtn.addEventListener('click', () => {
             congratsCard.classList.add('hidden');
             galleryCard.classList.remove('hidden');
+            fireClickConfetti();
         });
 
-        // Перемикання фото
+        // Гортання фото
         nextPhotoBtn.addEventListener('click', () => {
             photoCards[currentPhotoIndex].classList.remove('active');
             currentPhotoIndex++;
 
             if (currentPhotoIndex < photoCards.length) {
                 photoCards[currentPhotoIndex].classList.add('active');
+                fireClickConfetti();
 
                 if (currentPhotoIndex === photoCards.length - 1) {
                     nextPhotoBtn.textContent = "Завершити ❤️";
                 }
             } else {
-                // Фінальний екран і знову великий салют
+                // ФІНАЛЬНИЙ ЕКРАН
                 galleryCard.innerHTML = `
                     <h1 style="font-size: 2.2rem; margin-bottom: 15px; color: #ff6b81;">Зі святом, рідна! 🎂</h1>
                     <p style="font-size: 1.2rem; color: #636e72;">Міцно тебе обіймаємо та цілуємо! Дякуємо, що ти у нас є! ❤️✨🌸</p>
                 `;
-                fireFireworks(); 
+                // Бабахаємо великим салютом у фіналі
+                fireFinalFireworks();
             }
         });
     </script>
